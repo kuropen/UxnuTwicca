@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 日本語化する部分だけここに書く -->
+<resources>
+<string name="command_name">ux.nuで短縮</string>
+<string name="hello">短縮中…</string>
+</resources>

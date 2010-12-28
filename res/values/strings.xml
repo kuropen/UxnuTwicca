@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="app_name">twicca ux.nu plugin</string>
+<string name="command_name">Shorten URLs with ux.nu</string>
+<string name="hello">Shortening...</string>
+</resources>
