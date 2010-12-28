@@ -6,15 +6,17 @@ import java.util.regex.Pattern;
 import com.eternie.common.uxnuIF.UxnuInterface; //UxnuInterfaceは別packageにしました。他でも使うかもしれないので。
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Window;
 
 public class UxnuTwicca extends Activity {
 	/**
 	 * デバッグログの出力有無
 	 */
-	private static final boolean LOGD = true;
+	private static final boolean LOGD = false;
 	/**
 	 * デバッグログ用タグ
 	 */
@@ -32,7 +34,12 @@ public class UxnuTwicca extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main); //とりあえずメッセージは出す
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        
+        //待ち表示ダイアログ
+        ProgressDialog dialog = ProgressDialog.show(this, getText(R.string.command_name), 
+                getText(R.string.hello), true);
+        dialog.show();
         
         /*
          * Intent入力
@@ -66,15 +73,15 @@ public class UxnuTwicca extends Activity {
     public String urlDetectAndConvert (String basetext) {
     	if (basetext == null) return ""; //NullPointerException回避
     	
-    	StringBuffer result = new StringBuffer();
+    	StringBuffer result = new StringBuffer(); //出力バッファ
     	int base = 0;
     	
     	Matcher matcher = convURLLinkPtn.matcher(basetext);
     	while (matcher.find()) {
     		int beginning = matcher.start();
     		int end = matcher.end();
-    		result.append(basetext.substring(base, beginning));
-    		String target = basetext.substring(beginning, end);
+    		result.append(basetext.substring(base, beginning)); //URLと無関係な部分をバッファへ
+    		String target = basetext.substring(beginning, end); //URL部分を切り出す
     		String shortenResult = UxnuInterface.shortenURL(target);
     		result.append(shortenResult);
     		base = end;
