@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.eternie.common.uxnuIF.UxnuInterface; //UxnuInterfaceは別packageにしました。他でも使うかもしれないので。
+import com.eternie.common.uxnuIF.UxnuShortenedSiteDetail;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -82,7 +83,10 @@ public class UxnuTwicca extends Activity {
     		int end = matcher.end();
     		result.append(basetext.substring(base, beginning)); //URLと無関係な部分をバッファへ
     		String target = basetext.substring(beginning, end); //URL部分を切り出す
-    		String shortenResult = UxnuInterface.shortenURL(target);
+    		
+    		UxnuShortenedSiteDetail detail = UxnuInterface.shortenURLWithDetail(target);
+    		String shortenResult = detail.getUrl();
+    		//String shortenResult = UxnuInterface.shortenURL(target);
     		result.append(shortenResult);
     		base = end;
     	}
