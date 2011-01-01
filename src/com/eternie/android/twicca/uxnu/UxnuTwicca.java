@@ -86,7 +86,6 @@ public class UxnuTwicca extends Activity {
     		
     		UxnuShortenedSiteDetail detail = UxnuInterface.shortenURLWithDetail(target);
     		String shortenResult = detail.getUrl();
-    		//String shortenResult = UxnuInterface.shortenURL(target);
     		result.append(shortenResult);
     		base = end;
     	}
