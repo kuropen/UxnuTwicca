@@ -77,8 +77,11 @@ public class UxnuTwicca extends Activity {
     	StringBuffer result = new StringBuffer(); //出力バッファ
     	int base = 0;
     	
+    	boolean haveMatched = false; //マッチしたことがあるか記録
+    	
     	Matcher matcher = convURLLinkPtn.matcher(basetext);
     	while (matcher.find()) {
+    		haveMatched = true;
     		int beginning = matcher.start();
     		int end = matcher.end();
     		result.append(basetext.substring(base, beginning)); //URLと無関係な部分をバッファへ
@@ -89,6 +92,10 @@ public class UxnuTwicca extends Activity {
     		result.append(shortenResult);
     		base = end;
     	}
-    	return result.toString();
+    	//URLが含まれていない文字列を変換した場合にここで空文字列が返される事象の回避
+    	if (haveMatched)
+    		return result.toString();
+    	else
+    		return basetext;
     }
 }
