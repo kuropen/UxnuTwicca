@@ -3,8 +3,8 @@ package com.eternie.android.twicca.uxnu;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.eternie.common.uxnuIF.UxnuInterface; //UxnuInterfaceは別packageにしました。他でも使うかもしれないので。
-import com.eternie.common.uxnuIF.UxnuShortenedSiteDetail;
+import com.eternie.common.uxnuIF.UxnuInterface;
+import com.eternie.common.uxnuIF.UxnuSiteDetail;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -57,19 +57,21 @@ public class UxnuTwicca extends Activity {
         String convertedText = urlDetectAndConvert(text);
         if (LOGD) Log.d(TAG, "After: " + convertedText);
         
-        //返信Intent作成
-        Intent repIn = new Intent();
-        repIn.putExtra(Intent.EXTRA_TEXT, convertedText);
-        
-        //Intent転送
-        setResult(RESULT_OK, repIn);
+        if (convertedText != null) {
+	        //返信Intent作成
+	        Intent repIn = new Intent();
+	        repIn.putExtra(Intent.EXTRA_TEXT, convertedText);
+	        
+	        //Intent転送
+	        setResult(RESULT_OK, repIn);
+        }
         finish(); //←終了忘れない
     }
     
     /**
      * URLの存在を判別して、ux.nuによる短縮を行わせる。
      * @param basetext 元のテキスト
-     * @return basetext内のURLをux.nuにより変換したもの
+     * @return basetext内のURLをux.nuにより変換したもの (URLを含んでいない場合はnull)
      */
     public String urlDetectAndConvert (String basetext) {
     	if (basetext == null) return ""; //NullPointerException回避
@@ -87,15 +89,15 @@ public class UxnuTwicca extends Activity {
     		result.append(basetext.substring(base, beginning)); //URLと無関係な部分をバッファへ
     		String target = basetext.substring(beginning, end); //URL部分を切り出す
     		
-    		UxnuShortenedSiteDetail detail = UxnuInterface.shortenURLWithDetail(target);
+    		UxnuSiteDetail detail = UxnuInterface.shortenURLWithDetail(target);
     		String shortenResult = detail.getUrl();
     		result.append(shortenResult);
     		base = end;
     	}
-    	//URLが含まれていない文字列を変換した場合にここで空文字列が返される事象の回避
+    	//URLが含まれていない文字列を変換した場合はnull返答して、intent転送させないようにする
     	if (haveMatched)
     		return result.toString();
     	else
-    		return basetext;
+    		return null;
     }
 }
