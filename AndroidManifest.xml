@@ -4,7 +4,7 @@
       android:versionCode="1"
       android:versionName="1.0">
     <application android:label="@string/app_name" android:icon="@drawable/uxnutwicca">
-        <activity android:name=".UxnuTwicca" android:label="@string/command_name" android:enabled="true">
+        <activity android:name=".UxnuTwicca" android:label="@string/command_name" android:enabled="true" android:theme="@android:style/Theme.Dialog">
             <intent-filter>
                 <action android:name="jp.r246.twicca.ACTION_EDIT_TWEET"/>
                 <category android:name="android.intent.category.DEFAULT"/>
