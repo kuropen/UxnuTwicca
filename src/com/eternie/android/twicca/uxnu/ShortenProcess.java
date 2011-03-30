@@ -32,27 +32,34 @@ public class ShortenProcess implements Runnable {
 	@Override
 	public void run() {
 		//入力テキスト
-        String text = in.getStringExtra(Intent.EXTRA_TEXT);
-        
-        if (CommonConstants.LOGD) Log.d(CommonConstants.TAG, "Before: " + text);
-        
-        try {
-	        //コンバート
-	        String convertedText = urlDetectAndConvert(text);
-	        if (CommonConstants.LOGD) Log.d(CommonConstants.TAG, "After: " + convertedText);
-	        
-	        //返信Intent作成
-	        Intent repIn = new Intent();
-	        repIn.putExtra(Intent.EXTRA_TEXT, convertedText);
-	        
-	        //Intent転送
-	        act.setResult(Activity.RESULT_OK, repIn);
-        }catch(Exception e) {
-        	if (CommonConstants.LOGD) Log.d(CommonConstants.TAG, e.getMessage());
-        }
-        act.finish(); //←終了忘れない
+		String text = in.getStringExtra(Intent.EXTRA_TEXT);
+		
+		if (CommonConstants.LOGD) Log.d(CommonConstants.TAG, "Before: " + text);
+		
+		try {
+			//コンバート
+			String convertedText = urlDetectAndConvert(text);
+			if (CommonConstants.LOGD) Log.d(CommonConstants.TAG, "After: " + convertedText);
+			
+			//返信Intent作成
+			Intent repIn = new Intent();
+			repIn.putExtra(Intent.EXTRA_TEXT, convertedText);
+			
+			//Intent転送
+			act.setResult(Activity.RESULT_OK, repIn);
+		}catch(Exception e) {
+			if (CommonConstants.LOGD) Log.d(CommonConstants.TAG, e.getMessage());
+		}
+		act.finish(); //←終了忘れない
 	}
 	
+	/**
+	 * URLを検出し、都度短縮する。
+	 * @param basetext 処理前の文字列
+	 * @return 処理後の文字列
+	 * @throws IllegalArgumentException URLを含まない文字列が与えられた場合
+	 * @throws UxnuProcessException ux.nuの短縮処理中のエラー
+	 */
 	public String urlDetectAndConvert (String basetext) throws IllegalArgumentException, UxnuProcessException {
     	if (basetext == null) return ""; //NullPointerException回避
     	
