@@ -61,30 +61,30 @@ public class ShortenProcess implements Runnable {
 	 * @throws UxnuProcessException ux.nuの短縮処理中のエラー
 	 */
 	public String urlDetectAndConvert (String basetext) throws IllegalArgumentException, UxnuProcessException {
-    	if (basetext == null) return ""; //NullPointerException回避
-    	
-    	StringBuffer result = new StringBuffer(); //出力バッファ
-    	int base = 0;
-    	
-    	boolean haveMatched = false; //マッチしたことがあるか記録
-    	
-    	Matcher matcher = CommonConstants.convURLLinkPtn.matcher(basetext);
-    	while (matcher.find()) {
-    		haveMatched = true;
-    		int beginning = matcher.start();
-    		int end = matcher.end();
-    		result.append(basetext.substring(base, beginning)); //URLと無関係な部分をバッファへ
-    		String target = basetext.substring(beginning, end); //URL部分を切り出す
-    		
-    		UxnuSiteDetail detail = UxnuInterface.shortenURLWithDetail(target);
-    		String shortenResult = detail.getUrl();
-    		result.append(shortenResult);
-    		base = end;
-    	}
-    	//URLが含まれていない文字列を変換した場合はnull返答して、intent転送させないようにする
-    	if (!haveMatched)
-    		throw new IllegalArgumentException("No URL is included in the argument.");
-    	return result.toString();
+		if (basetext == null) return ""; //NullPointerException回避
+		
+		StringBuffer result = new StringBuffer(); //出力バッファ
+		int base = 0;
+		
+		boolean haveMatched = false; //マッチしたことがあるか記録
+		
+		Matcher matcher = CommonConstants.convURLLinkPtn.matcher(basetext);
+		while (matcher.find()) {
+			haveMatched = true;
+			int beginning = matcher.start();
+			int end = matcher.end();
+			result.append(basetext.substring(base, beginning)); //URLと無関係な部分をバッファへ
+			String target = basetext.substring(beginning, end); //URL部分を切り出す
+			
+			UxnuSiteDetail detail = UxnuInterface.shortenURLWithDetail(target);
+			String shortenResult = detail.getUrl();
+			result.append(shortenResult);
+			base = end;
+		}
+		//URLが含まれていない文字列を変換した場合はnull返答して、intent転送させないようにする
+		if (!haveMatched)
+			throw new IllegalArgumentException("No URL is included in the argument.");
+		return result.toString();
     }
 
 }
